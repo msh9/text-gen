@@ -22,7 +22,7 @@ type NgramReader interface {
 }
 
 type NgramBuilder interface {
-    Insert(*[]string) *Ngram
+    Consume(reader *scanner.Scanner, n int) int
 }
 
 function InitMemory() *Ngrams {
@@ -31,28 +31,3 @@ function InitMemory() *Ngrams {
     return ngrams
 }
 
-function (ngrams *Ngrams) Insert(values []string) *Ngram {
-    var ngram *Ngram
-    if len(values) != 0 {
-        ngram = new(Ngram)
-        ngram.Values = values
-        last := values[len(values) - 1]
-        var hasSuffix boolean
-        for i := 0; i < len(StopList); i++ {
-            hasSuffix = hasSuffix && strings.HasSuffix(last,StopList)
-        }
-        ngram.IsStop = hasSuffix
-        ngram.IsBeginner = unicode.IsUpper(rune(values[0][0]))
-       if ngrams.ngrams[values[0]] == nil {
-            ngramList = list.New()
-            ngramList.PushBack(ngram)
-            ngrams.ngrams[values[0]] = ngramList
-        } else {
-            ngrams.ngrams[values[0]].PushBack(ngram)
-        }
-    }
-    return ngram
-}
-
-function(ngrams *Ngrams) GetRandomGram() *Ngram {
-    
