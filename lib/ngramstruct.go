@@ -1,9 +1,8 @@
 package lib
 
 import (
-    'container/list'
-    'unicode'
-    'strings'
+    "container/list"
+    "text/scanner"
 )
 
 //Ngram constains a single ngram processed for a text corpus
@@ -11,8 +10,8 @@ import (
 //or ended a sentence in addition to the actual parsed text
 type Ngram struct {
     Values []string
-    IsStop boolean
-    IsBeginner boolean
+    IsStop bool
+    IsBeginner bool
 }
 
 //Ngrams a containing data structure intended to provide fast access to many ngrams
@@ -22,18 +21,17 @@ type Ngrams struct {
 
 type NgramReader interface {
     GetRandomGram() Ngram
-    GetNextGram(string) (Ngram,boolean)
+    GetNextGram(string) (Ngram, bool)
 }
 
 //NgramBuilder defines the Consume method signature
 type NgramBuilder interface {
-    Consume(ngrams *Ngrams) (reader *scanner.Scanner, n int) int
+    Consume(ngrams *Ngrams) (reader *scanner.Scanner, n int)
 }
 
 //InitMemory initializes an in-memory ngram storage object
-function InitMemory() *Ngrams {
+func InitMemory() *Ngrams {
     ngrams := new(Ngrams)
-    ngrams.ngrams = make(map[string]list.List)
+    ngrams.ngrams = make(map[string] *list.List)
     return ngrams
 }
-
