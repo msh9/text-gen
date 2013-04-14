@@ -1,15 +1,14 @@
 package lib
 
 import (
-    'container/list'
-    'unicode'
-    'strings'
+    "container/list"
+    "text/scanner"
 )
 
 type Ngram struct {
     Values []string
-    IsStop boolean
-    IsBeginner boolean
+    IsStop bool
+    IsBeginner bool
 }
 
 type Ngrams struct {
@@ -18,16 +17,16 @@ type Ngrams struct {
 
 type NgramReader interface {
     GetRandomGram() Ngram
-    GetNextGram(string) (Ngram,boolean)
+    GetNextGram(string) (Ngram, bool)
 }
 
 type NgramBuilder interface {
-    Consume(reader *scanner.Scanner, n int) int
+    Consume(reader *scanner.Scanner, n int) 
 }
 
-function InitMemory() *Ngrams {
+func InitMemory() *Ngrams {
     ngrams := new(Ngrams)
-    ngrams.ngrams = make(map[string]list.List)
+    ngrams.ngrams = make(map[string] *list.List)
     return ngrams
 }
 
