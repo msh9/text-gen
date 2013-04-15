@@ -62,13 +62,14 @@ func (ngrams *Ngrams) insert(window *list.List, n int, stopList *[3]string) *Ngr
         }
         ngram.IsStop = hasSuffix
         ngram.IsBeginner = unicode.IsUpper(rune(values[0][0]))
-       if ngrams.ngrams[values[0]] == nil {
-           ngramList := list.New()
+        if ngrams.ngrams[values[0]] == nil {
+            ngramList := list.New()
             ngramList.PushBack(ngram)
             ngrams.ngrams[values[0]] = ngramList
         } else {
             ngrams.ngrams[values[0]].PushBack(ngram)
         }
+        println("added a ngram: " + values[1] + " " + ", with opener: " + values[0])
     }
     return ngram
 }
