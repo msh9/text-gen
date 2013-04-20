@@ -10,7 +10,7 @@ const simpleTestString = "Hello world, my name is Michael Hughes. This is a simp
 const testNgramSize = 2
 const numOfSimpleTestHelloOpeners = 1
 
-func getSimpleTestReader() *scanner.Scanner {
+func getSimpleTestConsumer() *scanner.Scanner {
     strBuffer := bytes.NewBufferString(simpleTestString)
     var reader scanner.Scanner
     reader.Init(strBuffer)
