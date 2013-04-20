@@ -31,7 +31,7 @@ type NgramReader interface {
 
 //NgramBuilder defines method(s) that are expected for use in building a set of ngrams
 type NgramBuilder interface {
-    Consume(reader *scanner.Scanner, n int) 
+    Consume(reader *scanner.Scanner, n int)
 }
 
 //InitMemory creates a basic in-memory ngram storage unit

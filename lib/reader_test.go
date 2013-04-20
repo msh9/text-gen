@@ -43,13 +43,15 @@ func TestConsume(t *testing.T) {
 }
 
 func BenchmarkConsume(b *testing.B) {
+    n := 60
     b.StopTimer()
     b.ResetTimer()
     ngrams := InitMemory()
     consumer := getSimpleTestConsumer()
-    for i := 0; i < b.N; i++ {
+    for i := 0; i < n; i++ {
         b.StartTimer()
         ngrams.Consume(consumer, testNgramSize)
         b.StopTimer()
     }
+    b.N = n
 }
