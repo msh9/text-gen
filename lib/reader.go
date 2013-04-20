@@ -43,11 +43,13 @@ func (ngrams *Ngrams) Consume(reader *scanner.Scanner, n int) {
 func (ngrams *Ngrams) insert(window *list.List, n int, stopList *[3]string) *Ngram {
     values := make([]string,n)
     e := window.Front()
+    println("Ngram:")
     for i := 0; i < n; i++ {
         if e == nil {
             break
         }
         values[i] = e.Value.(string)
+        println(values[i])
         e = e.Next()
     }
 
@@ -56,9 +58,9 @@ func (ngrams *Ngrams) insert(window *list.List, n int, stopList *[3]string) *Ngr
         ngram = new(Ngram)
         ngram.Values = values
         last := values[len(values) - 1]
-        var hasSuffix bool
+        hasSuffix := false
         for i := 0; i < len(stopList); i++ {
-            hasSuffix = hasSuffix && strings.HasSuffix(last,stopList[i])
+            hasSuffix = hasSuffix || strings.HasSuffix(last,stopList[i])
         }
         ngram.IsStop = hasSuffix
         ngram.IsBeginner = unicode.IsUpper(rune(values[0][0]))
@@ -69,7 +71,6 @@ func (ngrams *Ngrams) insert(window *list.List, n int, stopList *[3]string) *Ngr
         } else {
             ngrams.ngrams[values[0]].PushBack(ngram)
         }
-        println("added a ngram: " + values[1] + " " + ", with opener: " + values[0])
     }
     return ngram
 }

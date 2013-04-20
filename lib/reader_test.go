@@ -8,11 +8,13 @@ import (
 
 const simpleTestString = "Hello world, my name is Michael Hughes. This is a simple test string. Goodbye!"
 const testNgramSize = 2
+const numOfSimpleTestHelloOpeners = 1
 
 func getSimpleTestReader() *scanner.Scanner {
     strBuffer := bytes.NewBufferString(simpleTestString)
     var reader scanner.Scanner
     reader.Init(strBuffer)
+    reader.Mode = scanner.ScanRawStrings | scanner.ScanStrings | scanner.ScanChars | scanner.ScanComments | scanner.ScanIdents
     return &reader
 }
 
@@ -27,11 +29,11 @@ func TestConsume(t *testing.T) {
         t.Fatal("Hello world or string. Goodbye! ngrams were not present in memory\n")
     }
 
-    if ngrams.ngrams["Hello"].Len() != testNgramSize {
-        t.Errorf("Ngrams not of size %d\n", testNgramSize)
+    if ngrams.ngrams["Hello"].Len() != numOfSimpleTestHelloOpeners {
+        t.Errorf("Ngrams not of size %d\n", numOfSimpleTestHelloOpeners)
     }
 
-    ngram := ngrams.ngrams["string"].Front().Value.(Ngram)
+    ngram := ngrams.ngrams["Hello"].Front().Value.(*Ngram)
     if !ngram.IsBeginner {
         t.Error("Beginning of sentence should have been marked beginner")
     }
