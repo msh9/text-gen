@@ -17,17 +17,17 @@ type Ngram struct {
     IsBeginner bool
 }
 
-//Ngrams is a wrapper struct that contains a map of lists.
+//Ngrams is a wrapper struct that contains a simple in-memory store for ngrams
 type Ngrams struct {
     ngrams map[string] *list.List
-    randNgram []string 
+    beginnerKeys []string 
 }
 
 //NgramReader defines the methods that any object which returns 
 //ngrams should support
 type NgramReader interface {
-    GetRandomGram() Ngram
-    GetNextGram(string) (Ngram, bool)
+    GetRandomBeginner() Ngram
+    GetNext(string) (Ngram, bool)
 }
 
 //NgramBuilder defines method(s) that are expected for use in building a set of ngrams

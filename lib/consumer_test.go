@@ -40,6 +40,19 @@ func TestConsume(t *testing.T) {
     if ngram.IsStop {
         t.Error("Beginning of setence should have not been marked as a stop")
     }
+
+    beginnerKeys := ngrams.beginnerKeys
+    if len(beginnerKeys) < 1 {
+        t.Error("List of beginner keys should contain some value")
+    }
+
+    foundHello := false
+    for i := 0; i < len(beginnerKeys); i++ {
+        foundHello = foundHello || beginnerKeys[i] == "Hello"
+    }
+    if !foundHello {
+        t.Errorf("%s should have been in beginner key list\n","Hello")
+    }
 }
 
 func BenchmarkConsume(b *testing.B) {
