@@ -20,6 +20,7 @@ type Ngram struct {
 //Ngrams is a wrapper struct that contains a map of lists.
 type Ngrams struct {
     ngrams map[string] *list.List
+    randNgram []string 
 }
 
 //NgramReader defines the methods that any object which returns 
