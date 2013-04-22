@@ -26,8 +26,8 @@ type Ngrams struct {
 //NgramReader defines the methods that any object which returns 
 //ngrams should support
 type NgramReader interface {
-    GetRandomBeginner() Ngram
-    GetNext(string) (Ngram, bool)
+    GetRandomBeginner() *Ngram
+    GetNext(string) (*Ngram, bool)
 }
 
 //NgramBuilder defines method(s) that are expected for use in building a set of ngrams
