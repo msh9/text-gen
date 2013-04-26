@@ -33,6 +33,15 @@ func TestGetNext(t *testing.T) {
     t.Logf("Ngram opening word was: %s", ngram.Values[0])
 }
 
+//TestGetNext tests another basic case of GetNext, looking for a none beginner ngram
+func TestGetNextNonBeginner(t *testing.T) {
+    ngrams := getBuiltNgrams()
+    ngram,_ := ngrams.GetNext("world")
+    if ngram.IsBeginner {
+        t.Error("No ngram returned from GetNext or it was marked as a beginner")
+    }
+    t.Logf("Ngram opening word was: %s", ngram.Values[0])
+}
 //TestGetNext tests another basic case of GetNext, test for a value that doesn't
 //exist as an opener in the ngram set
 func TestGetNextEmpty(t *testing.T) {
