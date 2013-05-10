@@ -21,20 +21,41 @@ func (ngrams *Ngrams) Consume(reader io.Reader, n int) {
     //fill & slide the window
     bufferedReader := bufio.NewReader(reader)
     curLine, err := bufferedReader.ReadString('\n')
-    i := 0;
+
+    //first set of loops fill the window and then insert the initial data
+    i := 0
+    fieldsRead := 0
+    var fields []string
     for err == nil {
-        fields := strings.Fields(curLine)
-        for j := 0; j < len(fields); j++ {
-            window.PushBack(fields[j])
+        fields = strings.Fields(curLine)
+        for fieldsRead := 0; fieldsRead < len(fields); fieldsRead++ {
+            window.PushBack(fields[fieldsRead])
             i++
-            if i > n {
-                window.Remove(window.Front())
-            }
-            if i % n == 0 {
+            if i == n {
                 ngrams.insert(window,n,&stopList,beginnerSet)
+                break
             }
         }
+        if i == n {
+            break
+        }
         curLine, err = bufferedReader.ReadString('\n')
+    }
+
+    //second set of loops run till we run out of content
+    for err == nil {
+        fields := strings.Fields(curLine)
+        for j := fieldsRead; j < len(fields); j++ {
+            window.PushBack(fields[j])
+            window.Remove(window.Front())
+            ngrams.insert(window,n,&stopList,beginnerSet)
+        }
+        curLine, err = bufferedReader.ReadString('\n')
+        //bit of a hack here because after during the first iteration of the 
+        //above loop we want to pick up where the initial window filling loop
+        //left off--so we use the fieldsRead variable. After this loop's first
+        //iteration though we want to always start as zero.
+        fieldsRead = 0 
     }
 
     totalBeginners := len(beginnerSet)
@@ -69,6 +90,7 @@ func (ngrams *Ngrams) insert(window *list.List, n int, stopList *[3]string, begi
     if len(values) != 0 {
         ngram = new(Ngram)
         ngram.Values = values
+        println("Made ngram with "+values[0])
         last := values[len(values) - 1]
         hasSuffix := false
         for i := 0; i < len(stopList); i++ {
