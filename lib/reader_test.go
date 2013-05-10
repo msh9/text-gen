@@ -26,21 +26,27 @@ func TestGetRandomBeginner(t *testing.T) {
 //in the simple test case string
 func TestGetNext(t *testing.T) {
     ngrams := getBuiltNgrams()
-    ngram,_ := ngrams.GetNext("Hello")
-    if !ngram.IsBeginner {
+    ngram,found := ngrams.GetNext("Hello")
+    if !found {
+        t.Error("Did not find ngram: Hello")
+    } else if !ngram.IsBeginner {
         t.Error("No ngram returned from GetNext or it wasn't marked as a beginner")
+    } else {
+        t.Logf("Ngram opening word was: %s", ngram.Values[0])
     }
-    t.Logf("Ngram opening word was: %s", ngram.Values[0])
 }
 
 //TestGetNext tests another basic case of GetNext, looking for a none beginner ngram
 func TestGetNextNonBeginner(t *testing.T) {
     ngrams := getBuiltNgrams()
-    ngram,_ := ngrams.GetNext("world")
-    if ngram.IsBeginner {
+    ngram,found := ngrams.GetNext("world")
+    if !found {
+        t.Error("Did not find ngram: world")
+    } else if ngram.IsBeginner {
         t.Error("No ngram returned from GetNext or it was marked as a beginner")
+    } else {
+        t.Logf("Ngram opening word was: %s", ngram.Values[0])
     }
-    t.Logf("Ngram opening word was: %s", ngram.Values[0])
 }
 //TestGetNext tests another basic case of GetNext, test for a value that doesn't
 //exist as an opener in the ngram set

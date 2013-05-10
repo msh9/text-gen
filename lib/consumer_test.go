@@ -2,20 +2,17 @@ package lib
 
 import (
     "testing"
-    "text/scanner"
     "bytes"
+    "io"
 )
 
-const simpleTestString = "Hello world, my name is Michael Hughes. This is a simple test string. Goodbye!"
+const simpleTestString = "Hello world, my name is Michael Hughes. This is a simple test string. Goodbye!\n"
 const testNgramSize = 2
 const numOfSimpleTestHelloOpeners = 1
 
-func getSimpleTestConsumer() *scanner.Scanner {
-    strBuffer := bytes.NewBufferString(simpleTestString)
-    var reader scanner.Scanner
-    reader.Init(strBuffer)
-    reader.Mode = scanner.ScanRawStrings | scanner.ScanStrings | scanner.ScanChars | scanner.ScanComments | scanner.ScanIdents
-    return &reader
+func getSimpleTestConsumer() io.Reader {
+    reader := bytes.NewReader([]byte(simpleTestString))
+    return reader
 }
 
 func TestConsume(t *testing.T) {

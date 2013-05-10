@@ -2,7 +2,8 @@
 package lib
 
 import (
-    "text/scanner"
+    "bufio"
+    "io"
     "container/list"
     "unicode"
     "strings"
@@ -13,28 +14,32 @@ import (
 //Example input: "The quick brown fox jumped over the fence to avoid the zany doxen."
 //To split into a two gram we would split on whitespace and get ['The','quick'] followed
 //by ['quick','brown'], and so on. 
-func (ngrams *Ngrams) Consume(reader *scanner.Scanner, n int) {
+func (ngrams *Ngrams) Consume(reader io.Reader, n int) {
     window := list.New()
     stopList := [3]string {"?","!","."}
     beginnerSet := make(map[string] bool)
-    //fill the initial window
-    tok := reader.Scan()
-    for i := 0; tok != scanner.EOF && i < n; i++ {
-        window.PushBack(reader.TokenText())
-        tok = reader.Scan()
-    }
-    ngrams.insert(window,n,&stopList,beginnerSet)
-    //now slide the window
-    for tok != scanner.EOF {
-        window.Remove(window.Front())
-        window.PushBack(reader.TokenText())
-        tok = reader.Scan()
-        ngrams.insert(window,n,&stopList,beginnerSet)
+    //fill & slide the window
+    bufferedReader := bufio.NewReader(reader)
+    curLine, err := bufferedReader.ReadString('\n')
+    i := 0;
+    for err == nil {
+        fields := strings.Fields(curLine)
+        for j := 0; j < len(fields); j++ {
+            window.PushBack(fields[j])
+            i++
+            if i > n {
+                window.Remove(window.Front())
+            }
+            if i % n == 0 {
+                ngrams.insert(window,n,&stopList,beginnerSet)
+            }
+        }
+        curLine, err = bufferedReader.ReadString('\n')
     }
 
     totalBeginners := len(beginnerSet)
     beginnerKeys := make([]string,totalBeginners)
-    i := 0
+    i = 0
     for k := range beginnerSet {
         beginnerKeys[i] = k
         i++

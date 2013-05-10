@@ -15,6 +15,7 @@ func (ngrams *Ngrams) GetRandomBeginner() *Ngram {
         if i == choice {
             ngram = e.Value.(*Ngram)
         }
+        i++
     }
     return ngram
 }
@@ -36,6 +37,7 @@ func (ngrams *Ngrams) GetNext(firstWord string) (*Ngram, bool) {
                 foundNgram = true
                 ngram = e.Value.(*Ngram)
             }
+            pos++
         }
     }
     return ngram,foundNgram
