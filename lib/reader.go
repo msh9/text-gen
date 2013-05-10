@@ -24,7 +24,7 @@ func (ngrams *Ngrams) GetRandomBeginner() *Ngram {
 //
 //Returns a Ngram and bool. The bool will be set to false if no ngram is
 //found that begins with firstWord, additionally if no ngram is found the
-//return value of Ngram will nil.
+//return value of Ngram will be invalid.
 func (ngrams *Ngrams) GetNext(firstWord string) (*Ngram, bool) {
     foundNgram := false
     var ngram *Ngram
@@ -42,3 +42,15 @@ func (ngrams *Ngrams) GetNext(firstWord string) (*Ngram, bool) {
     }
     return ngram,foundNgram
 }
+
+//GetNextIgnorePunc attempts to return the next ngram that begins with firstWord ignore any leading or end non-word characters
+
+//Returns a Ngram and bool. The bool will be set to false if no ngram is
+//found that begins with firstWord, additionally if no ngram is found the
+//return value of Ngram will be invalid.
+//
+//N.B. Currently not implemented--uses logic of regular GetNext
+func (ngrams *Ngrams) GetNextIgnorePunc(firstWord string) (*Ngram, bool) {
+    return ngrams.GetNext(firstWord)
+}
+

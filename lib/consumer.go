@@ -28,7 +28,7 @@ func (ngrams *Ngrams) Consume(reader io.Reader, n int) {
     var fields []string
     for err == nil {
         fields = strings.Fields(curLine)
-        for fieldsRead := 0; fieldsRead < len(fields); fieldsRead++ {
+        for fieldsRead = 0; fieldsRead < len(fields); fieldsRead++ {
             window.PushBack(fields[fieldsRead])
             i++
             if i == n {
@@ -90,7 +90,6 @@ func (ngrams *Ngrams) insert(window *list.List, n int, stopList *[3]string, begi
     if len(values) != 0 {
         ngram = new(Ngram)
         ngram.Values = values
-        println("Made ngram with "+values[0])
         last := values[len(values) - 1]
         hasSuffix := false
         for i := 0; i < len(stopList); i++ {

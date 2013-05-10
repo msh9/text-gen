@@ -22,12 +22,14 @@ func TestConsume(t *testing.T) {
     ngrams.Consume(consumer, testNgramSize)
 
     //verify with spot checks
-    if ngrams.ngrams["Hello"] == nil || ngrams.ngrams["string"] == nil {
+    if ngrams.ngrams["Hello"] == nil || ngrams.ngrams["string."] == nil {
         t.Fatal("Hello world or string. Goodbye! ngrams were not present in memory\n")
     }
 
     if ngrams.ngrams["Hello"].Len() != numOfSimpleTestHelloOpeners {
-        t.Errorf("Ngrams not of size %d\n", numOfSimpleTestHelloOpeners)
+        t.Errorf("Should only be %d instances beginning with Hello, were: %d\n",
+             numOfSimpleTestHelloOpeners,
+             ngrams.ngrams["Hello"].Len())
     }
 
     ngram := ngrams.ngrams["Hello"].Front().Value.(*Ngram)

@@ -39,7 +39,7 @@ func TestGetNext(t *testing.T) {
 //TestGetNext tests another basic case of GetNext, looking for a none beginner ngram
 func TestGetNextNonBeginner(t *testing.T) {
     ngrams := getBuiltNgrams()
-    ngram,found := ngrams.GetNext("world")
+    ngram,found := ngrams.GetNext("world,")
     if !found {
         t.Error("Did not find ngram: world")
     } else if ngram.IsBeginner {

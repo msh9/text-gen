@@ -28,6 +28,7 @@ type Ngrams struct {
 type NgramReader interface {
     GetRandomBeginner() *Ngram
     GetNext(string) (*Ngram, bool)
+    GetNextIgnorePunc(string) (*Ngram, bool)
 }
 
 //NgramBuilder defines method(s) that are expected for use in building a set of ngrams
